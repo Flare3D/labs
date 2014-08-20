@@ -1,0 +1,65 @@
+
+use namespace flare;
+use namespace flare.transforms;
+use namespace flare.filters;
+
+output sourceFactor = "one";
+output destFactor = "zero";
+output depthCompare = "always";
+output depthWrite = false;
+
+sampler2D gBuffer <mip = 0, wrap = 0>;
+sampler2D targetBuffer <mip = 0, wrap = 0>;
+
+interpolated float2 iUV = uv0;
+interpolated float4 iPosition = position.xyzw;
+
+param float2 step;
+
+technique blur {
+	interpolated float2 i0 = uv0.xy;
+	interpolated float2 i1 = uv0.xy + step * 1.407333;
+	interpolated float2 i2 = uv0.xy - step * 1.407333;
+	interpolated float2 i3 = uv0.xy + step * 3.294215;
+	interpolated float2 i4 = uv0.xy - step * 3.294215;
+	float4 sum = 0;
+	sum += sampler2D( targetBuffer, i0 ) * 0.204164;
+	sum += sampler2D( targetBuffer, i1 ) * 0.304005;
+	sum += sampler2D( targetBuffer, i2 ) * 0.304005;
+	sum += sampler2D( targetBuffer, i3 ) * 0.093913;
+	sum += sampler2D( targetBuffer, i4 ) * 0.093913;
+	output vertex = position.xyzw;
+	output fragment = sum;
+}
+
+technique motionBlur { 
+	
+	float4 color = sampler2D( targetBuffer, iUV0 );
+	float4 gData = sampler2D( gBuffer, iUV0 );
+	
+	const float samples = 4;
+	
+	param float3 viewRay;
+	param float4x4 prevViewProj;
+	param float2 blurScale = 1;
+	
+	interpolated float3 iViewRay = float3( uv0 * 2 - 1, 1 ) * viewRay;
+	
+	float4 curr = float4( gData.x * iViewRay, 1 );
+	float4 prev = curr * prevViewProj;
+	prev.xyz /= prev.w;
+	prev = prev * 0.5 + 0.5;
+	
+	float2 vel = (prev.xy - iUV0) * blurScale;
+	
+	vel /= samples;
+	float2 offset = iUV0 - 0.5 * vel;
+	#for ( const float i = 0; i < samples; i++ ) {
+		offset += vel;
+		color += sampler2D( targetBuffer, offset );
+	}
+	color /= const(samples + 1);
+	
+	output vertex = position.xyzw;
+	output fragment = color;
+}

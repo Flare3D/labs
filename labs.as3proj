@@ -1,0 +1,167 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<project version="2">
+  <!-- Output SWF options -->
+  <output>
+    <movie outputType="Application" />
+    <movie input="" />
+    <movie path="bin\flare3d.swf" />
+    <movie fps="60" />
+    <movie width="800" />
+    <movie height="450" />
+    <movie version="14" />
+    <movie minorVersion="0" />
+    <movie platform="Flash Player" />
+    <movie background="#FFFFFF" />
+    <movie preferredSDK="Z:\projects\flex4.6" />
+  </output>
+  <!-- Other classes to be compiled into your SWF -->
+  <classpaths>
+    <class path="src" />
+  </classpaths>
+  <!-- Build options -->
+  <build>
+    <option accessible="False" />
+    <option advancedTelemetry="True" />
+    <option allowSourcePathOverlap="False" />
+    <option benchmark="False" />
+    <option es="False" />
+    <option inline="False" />
+    <option locale="" />
+    <option loadConfig="" />
+    <option optimize="True" />
+    <option omitTraces="True" />
+    <option showActionScriptWarnings="True" />
+    <option showBindingWarnings="True" />
+    <option showInvalidCSS="True" />
+    <option showDeprecationWarnings="True" />
+    <option showUnusedTypeSelectorWarnings="True" />
+    <option strict="True" />
+    <option useNetwork="False" />
+    <option useResourceBundleMetadata="True" />
+    <option warnings="True" />
+    <option verboseStackTraces="False" />
+    <option linkReport="" />
+    <option loadExterns="" />
+    <option staticLinkRSL="True" />
+    <option additional="-swf-version=27" />
+    <option compilerConstants="CONFIG::TRIAL,false&#xA;CONFIG::VERSION,&quot;dev&quot;&#xA;CONFIG::IDE,false" />
+    <option minorVersion="" />
+  </build>
+  <!-- SWC Include Libraries -->
+  <includeLibraries>
+    <!-- example: <element path="..." /> -->
+  </includeLibraries>
+  <!-- SWC Libraries -->
+  <libraryPaths>
+    <element path="lib\assets.swc" />
+    <element path="lib\Flare3D_2041.swc" />
+    <element path="lib\Flare3D_2.5.19e_Trial.swc" />
+    <element path="lib\flashplayer11-9_playerglobal.swc" />
+    <element path="lib\greensock.swc" />
+    <element path="lib\Flare3D_2.7.2_Commercial.swc" />
+    <element path="lib\Flare3D_Dev.swc" />
+  </libraryPaths>
+  <!-- External Libraries -->
+  <externalLibraryPaths>
+    <!-- example: <element path="..." /> -->
+  </externalLibraryPaths>
+  <!-- Runtime Shared Libraries -->
+  <rslPaths>
+    <!-- example: <element path="..." /> -->
+  </rslPaths>
+  <!-- Intrinsic Libraries -->
+  <intrinsics>
+    <!-- example: <element path="..." /> -->
+  </intrinsics>
+  <!-- Assets to embed into the output SWF -->
+  <library>
+    <!-- example: <asset path="..." id="..." update="..." glyphs="..." mode="..." place="..." sharepoint="..." /> -->
+  </library>
+  <!-- Class files to compile (other referenced classes will automatically be included) -->
+  <compileTargets>
+    <compile path="src\agal2\Main.as" />
+  </compileTargets>
+  <!-- Paths to exclude from the Project Explorer tree -->
+  <hiddenPaths>
+    <hidden path="SWCSettings.lxml" />
+    <hidden path="notes.txt" />
+    <hidden path="flare3d.bat" />
+    <hidden path="flare3d.as3proj" />
+    <hidden path="docs.docproj" />
+    <hidden path="collada.bat" />
+    <hidden path="clean.bat" />
+    <hidden path="air.as3proj" />
+    <hidden path="prerelease.bat" />
+    <hidden path="flare3d_3dmax_plugin_v2_beta.exe" />
+    <hidden path="services\C" />
+    <hidden path="services\configure.js" />
+    <hidden path="services\DAEexporter.ms" />
+    <hidden path="services\env_flare3d.swf" />
+    <hidden path="services\flare3d.swf" />
+    <hidden path="services\flare3d_vacas.swf" />
+    <hidden path="services\FlashHook.dll" />
+    <hidden path="services\FlashMate.exe" />
+    <hidden path="services\kill.bat" />
+    <hidden path="services\light_flare3d.swf" />
+    <hidden path="services\make.bat" />
+    <hidden path="services\makeAIR.bat" />
+    <hidden path="services\makeDev.bat" />
+    <hidden path="services\pista.swf" />
+    <hidden path="services\pos.ini" />
+    <hidden path="services\pskill.exe" />
+    <hidden path="services\snipets.txt" />
+    <hidden path="services\track_flare3d.swf" />
+    <hidden path="services\Z" />
+    <hidden path="services\zip.exe" />
+    <hidden path="backup.bat" />
+    <hidden path="changelog.txt" />
+    <hidden path="dev.as3proj" />
+    <hidden path="dev.docproj" />
+    <hidden path="dev.txt" />
+    <hidden path="dev_build_air.bat" />
+    <hidden path="dev_build_bundle.bat" />
+    <hidden path="dev_build_installer.bat" />
+    <hidden path="dev_run.bat" />
+    <hidden path="docs all.docproj" />
+    <hidden path="docs flare.docproj" />
+    <hidden path="docs flsl.docproj" />
+    <hidden path="docs with collada.docproj" />
+    <hidden path="docs_flare.bat" />
+    <hidden path="flare3d.exe" />
+    <hidden path="flare3d_library.as3proj" />
+    <hidden path="flare3d_pre_html.as3proj" />
+    <hidden path="flare3d_prerelease.as3proj" />
+    <hidden path="flsl_docs.rtf" />
+    <hidden path="java.exe" />
+    <hidden path="max plugin.nsi" />
+    <hidden path="readme.txt" />
+    <hidden path="SelfSigned.pfx" />
+    <hidden path="swc_collada.bat" />
+    <hidden path="swc_dev.bat" />
+    <hidden path="swc_flare3d.bat" />
+    <hidden path="swc_net.bat" />
+    <hidden path="todo.txt" />
+    <hidden path="users.txt" />
+    <hidden path="zip_prerelease.bat" />
+    <hidden path="obj" />
+    <hidden path="application.xml" />
+    <hidden path="PackageApp.bat" />
+    <hidden path="run.bat" />
+    <hidden path="asteroids.rar" />
+  </hiddenPaths>
+  <!-- Executed before build -->
+  <preBuildCommand />
+  <!-- Executed after build -->
+  <postBuildCommand alwaysRun="False" />
+  <!-- Other project options -->
+  <options>
+    <option showHiddenPaths="False" />
+    <option testMovie="Default" />
+    <option testMovieCommand="" />
+  </options>
+  <!-- Plugin storage -->
+  <storage>
+    <entry key="at_enabled"><![CDATA[1]]></entry>
+    <entry key="at_password"><![CDATA[]]></entry>
+  </storage>
+</project>
