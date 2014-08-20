@@ -29,7 +29,6 @@ package agal2
 	{
 		[Embed(source = "assets/fx.flsl.compiled", mimeType = "application/octet-stream")] private var FX:Class;
 		[Embed(source = "assets/mrt.flsl.compiled", mimeType = "application/octet-stream")] private var MRT:Class;
-		[Embed(source = "assets/baseline.flsl.compiled", mimeType = "application/octet-stream")] private var BASELINE:Class;
 		[Embed(source = "assets/lighting.flsl.compiled", mimeType = "application/octet-stream")] private var LIGHTING:Class;
 		[Embed(source = "assets/white.atf", mimeType = "application/octet-stream")] private var WHITE:Class;
 		[Embed(source = "assets/map.f3d", mimeType = "application/octet-stream")] private var MAP:Class;
