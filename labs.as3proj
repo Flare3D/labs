@@ -44,7 +44,7 @@
     <option loadExterns="" />
     <option staticLinkRSL="True" />
     <option additional="-swf-version=27" />
-    <option compilerConstants="CONFIG::TRIAL,false&#xA;CONFIG::VERSION,&quot;dev&quot;&#xA;CONFIG::IDE,false" />
+    <option compilerConstants="" />
     <option minorVersion="" />
   </build>
   <!-- SWC Include Libraries -->
@@ -53,12 +53,6 @@
   </includeLibraries>
   <!-- SWC Libraries -->
   <libraryPaths>
-    <element path="lib\assets.swc" />
-    <element path="lib\Flare3D_2041.swc" />
-    <element path="lib\Flare3D_2.5.19e_Trial.swc" />
-    <element path="lib\flashplayer11-9_playerglobal.swc" />
-    <element path="lib\greensock.swc" />
-    <element path="lib\Flare3D_2.7.2_Commercial.swc" />
     <element path="lib\Flare3D_Dev.swc" />
   </libraryPaths>
   <!-- External Libraries -->
