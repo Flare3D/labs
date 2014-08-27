@@ -23,7 +23,8 @@ package gamepad
 	[SWF(width = 800, height = 450, frameRate = 60)]
 	
 	/**
-	 * Deferred lighting experiment.
+	 * AIR Gamepad + Deferred lighting experiment.
+	 * http://www.flare3d.com/demos/gamepad
 	 * @author Ariel Nehmad
 	 */
 	public class Main extends Sprite 
