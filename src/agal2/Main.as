@@ -23,6 +23,7 @@ package agal2
 	
 	/**
 	 * Deferred lighting experiment.
+	 * http://www.flare3d.com/demos/agal2
 	 * @author Ariel Nehmad
 	 */
 	public class Main extends Sprite 
@@ -30,9 +31,9 @@ package agal2
 		[Embed(source = "assets/fx.flsl.compiled", mimeType = "application/octet-stream")] private var FX:Class;
 		[Embed(source = "assets/mrt.flsl.compiled", mimeType = "application/octet-stream")] private var MRT:Class;
 		[Embed(source = "assets/lighting.flsl.compiled", mimeType = "application/octet-stream")] private var LIGHTING:Class;
-		[Embed(source = "assets/white.atf", mimeType = "application/octet-stream")] private var WHITE:Class;
-		[Embed(source = "assets/map.f3d", mimeType = "application/octet-stream")] private var MAP:Class;
-		[Embed(source = "assets/sky.atf", mimeType = "application/octet-stream")] private var SKY:Class;
+		[Embed(source = "../../assets/white.atf", mimeType = "application/octet-stream")] private var WHITE:Class;
+		[Embed(source = "../../assets/map.f3d", mimeType = "application/octet-stream")] private var MAP:Class;
+		[Embed(source = "../../assets/sky.atf", mimeType = "application/octet-stream")] private var SKY:Class;
 		
 		// just some basic setup before creating the shader materials.
 		FLSL.agalVersion = 2;
