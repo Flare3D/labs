@@ -1,0 +1,24 @@
+use namespace flare;
+use namespace flare.transforms;
+use namespace flare.filters;
+
+sampler2D texture;
+param float2 tiles <ui = "int"> = 5;
+param float speed = 5;
+param TIME time;
+
+technique main 
+{
+	float fmod( float a, float b ) {
+		return floor( a * b ) / b;
+	}
+	
+	float2 uv;
+	float t = frac(time.w * speed);
+	uv.x = fmod( t * tiles.y, tiles.x );
+	uv.y = fmod( t, tiles.y );
+	interpolated float2 iuv = uv0 / tiles + uv;
+	
+	output vertex = transform();
+	output fragment = sampler2D( texture, iuv );
+}

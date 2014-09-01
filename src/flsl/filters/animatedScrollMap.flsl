@@ -1,0 +1,16 @@
+use namespace flare;
+use namespace flare.transforms;
+use namespace flare.filters;
+
+#semantic FRAC_TIME float4;
+
+sampler2D texture;
+
+param FRAC_TIME time;
+param float2 speed = 1;
+
+technique main 
+{
+	output vertex = transform();
+	output fragment = sampler2D( texture, interpolate( uv0 + time.w * speed ) );
+}

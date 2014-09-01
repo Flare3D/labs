@@ -1,0 +1,30 @@
+use namespace flare;
+use namespace flare.transforms;
+use namespace flare.filters;
+
+sampler2D texture;
+
+param float scale = 100;
+
+technique main 
+{
+	output vertex = transform();
+	
+	interpolated float3 iPos = vwPosition / scale;
+	
+	float3 an = abs( iwNormal );
+	float total = an.x + an.y + an.z;
+	an /= total;
+	
+	float4 tex0 = sampler2D( texture, iPos.xy );
+	float4 tex1 = sampler2D( texture, iPos.xz );
+	float4 tex2 = sampler2D( texture, iPos.yz );
+	
+	float4 color;
+	
+	color =  tex0 * an.z;
+	color += tex1 * an.y;
+	color += tex2 * an.x;
+	
+	output fragment = color;
+}

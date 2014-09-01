@@ -1,0 +1,26 @@
+use namespace flare;
+use namespace flare.transforms;
+use namespace flare.filters;
+
+param float scale = 1;
+param CAMERA cameraWorld;
+
+technique main 
+{
+	float4 pos = position.xyzw;
+	
+	pos.xyz *= scale;
+	pos.x += worldView[0].w;
+	pos.y += worldView[1].w;
+	pos.z += worldView[2].w;
+	
+	// need to update these if we want to use it as a Shader3D filter, 
+	// these are vertex world position and vertex world normal, which are used
+	// mainly for ligtghing, fog, etc..
+	vwPosition = pos.xyz;
+	vwNormal = normal * cameraWorld.xyz;
+	iwNormal = vwNormal;
+	
+	// this filter only outputs a vertex transform.
+	output vertex = pos * proj;
+}

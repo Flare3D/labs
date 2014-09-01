@@ -1,0 +1,44 @@
+
+use namespace flare;
+use namespace flare.transforms;
+
+sampler2D textureA <order = 0>;
+param float2 repeatA <order = 1> = 1;
+param float2 speedA <order = 2> = 0;
+sampler2D textureB <order = 3>;
+param float2 repeatB <order = 4> = 1;
+param float2 speedB <order = 5> = 0;
+param bool invertX <ui = "bool" order = 6> = false;
+param bool invertY <ui = "bool" order = 7> = false;
+param TIME time;
+
+// this filter does not output vertex transform nor fragment color, it only 
+// modifies the current fragment world normal (fwNormal), which is stored in flare namespace.
+
+technique main
+{
+	float4 bump;
+	float2 uv0;
+	
+	uv0 = iUV0;
+	#if ( repeatA != 1 ) uv0 *= repeatA;
+	#if ( speedA != 0 ) uv0 += speedA * time.w;
+	bump = sampler2D( textureA, uv0 ) * 2 - 1;
+	
+	uv0 = iUV0;
+	#if ( repeatB != 1 ) uv0 *= repeatB;
+	#if ( speedB != 0 ) uv0 += speedB * time.w;
+	bump.xy += sampler2D( textureB, uv0 ).xy * 2 - 1;
+	
+	#if ( invertX && invertY )
+		bump.xy = -bump.xy;
+	#else if ( invertX )
+		bump.x = -bump.x;
+	#else if ( invertY )
+		bump.y = -bump.y;
+
+	interpolated float3 iwTangent =  normalize(tangent * world.xyz); 
+	interpolated float3 iwBinormal =  normalize(bitangent * world.xyz);
+	
+	fwNormal = normalize( iwNormal * bump.z + bump.x * iwTangent + bump.y * iwBinormal );
+}

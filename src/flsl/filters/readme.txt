@@ -1,0 +1,2 @@
+Tu use these filters, go to any material on the Flare3D tool, click to add a new filter and select "Open Folder" menu and paste the filters there. 
+Next time you clilk to add a new filter, the new filters will be shown in the menu.
