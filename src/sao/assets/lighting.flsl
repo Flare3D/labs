@@ -1,0 +1,47 @@
+use namespace flare;
+use namespace flare.transforms;
+use namespace flare.filters;
+
+const float2 m = float2( 0.5,-0.5 );
+
+param NEAR_FAR nearFar;
+param float3 viewRay;
+param float4 lightProps;
+param float4 lightColor;
+
+sampler2D gBuffer <mip = 0, wrap = 0>;
+
+output depthWrite = false;
+output depthCompare = "always";
+output sourceFactor = "one";
+output destFactor = "one";
+output cullFace = "front";
+
+technique point 
+{
+	float4 pos = position.xyzw * worldViewProj;
+	
+	interpolated float4 iPos = pos;
+	
+	float2 uv = iPos.xy / iPos.w;
+	float4 G = sampler2D( gBuffer, uv * m + 0.5 );
+	float3 n = normalize( G.yzw * 2 - 1 );
+	float3 p = G.x * float3(uv, 1) * viewRay;
+	
+	float3 L = lightProps.xyz - p.xyz;
+	float atten = saturate( 1 - dot(L, L) / lightColor.w );
+	L = normalize( L )
+	
+	// diffuse.
+	float nDotL = dot( n, L ); 
+	float c = max( nDotL, 0 );
+	
+	// specular.
+	//float3 R = normalize( reflect( L, n ) );
+	//float3 V = normalize( iPos.xyz );
+	//float nDotH = dot( R, V );
+	//float s = pow( max( nDotH, 0 ), lightProps.w );
+	
+	output vertex = pos;
+	output fragment = float4( lightColor.xyz * atten * c, 0 /*s * atten*/ );
+}

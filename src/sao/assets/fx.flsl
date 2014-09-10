@@ -1,0 +1,122 @@
+
+use namespace flare;
+use namespace flare.transforms;
+use namespace flare.filters;
+
+output sourceFactor = "one";
+output destFactor = "zero";
+output depthCompare = "always";
+output depthWrite = false;
+
+sampler2D gBuffer <mip = 0, wrap = 0>;
+sampler2D targetBuffer <mip = 0, wrap = 0>;
+
+interpolated float2 iUV = uv0;
+interpolated float4 iPosition = position.xyzw;
+
+param float2 step;
+param float3 viewRay;
+
+technique blur {
+	interpolated float2 i0 = uv0.xy;
+	interpolated float2 i1 = uv0.xy + step * 1.407333;
+	interpolated float2 i2 = uv0.xy - step * 1.407333;
+	interpolated float2 i3 = uv0.xy + step * 3.294215;
+	interpolated float2 i4 = uv0.xy - step * 3.294215;
+	float4 sum = 0;
+	sum += sampler2D( targetBuffer, i0 ) * 0.204164;
+	sum += sampler2D( targetBuffer, i1 ) * 0.304005;
+	sum += sampler2D( targetBuffer, i2 ) * 0.304005;
+	sum += sampler2D( targetBuffer, i3 ) * 0.093913;
+	sum += sampler2D( targetBuffer, i4 ) * 0.093913;
+	output vertex = position.xyzw;
+	output fragment = sum;
+}
+
+technique quad {
+	output vertex = position.xyzw;
+	output fragment = sampler2D( targetBuffer, iUV0 );
+}
+
+/**
+ * Source paper: http://graphics.cs.williams.edu/papers/SAOHPG12/
+ * FLSL Shader ported from here: https://gist.github.com/fisch0920/6770311
+ */
+
+ #semantic SCREEN float4
+param SCREEN screen;
+const float NUM_SAMPLES = 10;
+const float INV_NUM_SAMPLES = 1 / NUM_SAMPLES;
+const float NUM_SPIRAL_TURNS = 7 * 6.28;
+const float epsilon = 0.01;
+sampler2D sNoise <mip = 0>;
+
+technique sao {
+	param float uBias = 0.5;
+	param float2 uNoiseScale = 5;
+	param float uIntensity = 30;
+	param float uSampleRadiusWS = 50;
+	
+	const float radius2 = uSampleRadiusWS * uSampleRadiusWS;
+	
+	float4 gData = sampler2D( gBuffer, iUV0 );
+
+	float radiusSS  = 0.0; // radius of influence in screen space
+	float radiusWS  = 0.0; // radius of influence in world space
+	float occlusion = 0.0;	
+	
+	float3 getPositionVS( float2 uv ) {
+		float d = sampler2D( gBuffer, uv ).r;
+		return d * float3( uv * 2.0 - 1.0, 1.0 ) * viewRay;
+	}
+	
+	// returns a unit vector and a screen-space radius for the tap on a unit disk 
+	// (the caller should scale by the actual disk radius)
+	float2 tapLocation( float sampleNumber, float spinAngle, float radiusSS ) {
+		// radius relative to radiusSS
+		float alpha = ( sampleNumber + 0.5 ) * INV_NUM_SAMPLES * 0.5;
+		float angle = alpha * NUM_SPIRAL_TURNS + spinAngle;
+		
+		radiusSS = alpha;
+		return float2( cos(angle), sin(angle) );
+	}
+	
+	float3 getOffsetPositionVS( float2 uv, float2 unitOffset, float radiusSS ) {
+		return getPositionVS( uv + radiusSS * unitOffset * screen.zw );
+	}
+	
+	float sampleAO( float2 uv, float3 positionVS, float3 normalVS, float sampleRadiusSS, float tapIndex, float rotationAngle )
+	{
+		// offset on the unit disk, spun for this pixel
+		float radiusSS;
+		float2 unitOffset = tapLocation( tapIndex, rotationAngle, radiusSS );
+		radiusSS *= sampleRadiusSS;
+		
+		float3 Q = getOffsetPositionVS( uv, unitOffset, radiusSS );
+		float3 v = Q - positionVS;
+		
+		float vv = dot(v, v);
+		float vn = dot(v, normalVS) - uBias;
+	
+		return (vv < radius2) * max(vn / (epsilon + vv), 0.0);
+	}	
+	
+	float3 originVS = getPositionVS( iUV0 );
+	float3 normalVS = normalize( gData.yzw * 2.0 - 1.0 );
+	
+	float3 sampleNoise = sampler2D( sNoise, iUV0 * uNoiseScale ).xyz;
+	float randomPatternRotationAngle = 2.0 * PI * sampleNoise.x;
+	
+	// TODO (travis): don't hardcode projScale
+	radiusSS = screen.y * 0.3;
+
+	#for ( float i = 0; i < NUM_SAMPLES; i++ )
+		occlusion += sampleAO( iUV0, originVS, normalVS, radiusSS, i, randomPatternRotationAngle );
+
+	occlusion = 1.0 - occlusion / NUM_SAMPLES;
+	occlusion = clamp(pow(occlusion, 1.0 + uIntensity), 0.0, 1.0);
+	
+	output vertex = position.xyzw;
+	output fragment = float4( occlusion.xxx, 1.0 ) * sampler2D( targetBuffer, iUV0 );
+}
+
