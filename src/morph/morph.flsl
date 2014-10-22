@@ -1,0 +1,34 @@
+use namespace flare;
+use namespace flare.transforms;
+use namespace flare.filters;
+
+param float4 color = float4( 1, 0, 0, 1 );
+
+input INPUT10 in10;
+input INPUT11 in11;
+input INPUT12 in12;
+input INPUT13 in13;
+input INPUT14 in14;
+input INPUT15 in15;
+
+param float4 morph = 0;
+
+technique main 
+{
+	float3 pos;
+	float3 nrm;
+	
+	pos = lerp( position, in10.xyz, morph.x );
+	nrm = lerp( normal, in11.xyz, morph.x );
+	pos = lerp( pos, in12.xyz, morph.y );
+	nrm = lerp( nrm, in13.xyz, morph.y );
+	pos = lerp( pos, in14.xyz, morph.z );
+	nrm = lerp( nrm, in15.xyz, morph.z );
+	nrm = normalize(nrm);
+	
+	vwPosition = (pos * world).xyz;
+	vwNormal = normalize( nrm * world.xyz );
+	iwNormal = vwNormal;
+	
+	output vertex = float4( pos, 1 ) * worldViewProj;
+}
